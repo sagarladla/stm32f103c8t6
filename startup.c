@@ -102,7 +102,7 @@ void DMA2_Channel2_IRQHandler(void)	__attribute__((weak, alias ("default_handler
 void DMA2_Channel3_IRQHandler(void)	__attribute__((weak, alias ("default_handler")));
 void DMA2_Channel4_5_IRQHandler(void)	__attribute__((weak, alias ("default_handler")));
 
-uint32_t __vector_table[]		__attribute__((section(".isr_vector"))) = {
+uint32_t __vector_table[]		__attribute__((section (".isr_vector"))) = {
 	STACK_START,
 	(uint32_t)&Reset_Handler,
 	(uint32_t)&NMI_Handler,
