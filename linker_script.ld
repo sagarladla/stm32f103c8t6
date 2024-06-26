@@ -7,13 +7,16 @@
  * 			- set FLASH memory from 0x08000000 address with 64KB space
  * 			- set SRAM  memory from 0x20000000 address with 20KB space
  * 			- define sections of memory
-*/
+ */
 
+OUTPUT(startup)
+OUTPUT_FORMAT(elf32-m3)
+OUTPUT_ARCH(m3)
 ENTRY(Reset_Handler)
 
 MEMORY
 {
-	FLASH(rw):	ORIGIN = 0x08000000,	LENGTH = 64K
+	FLASH(rx):	ORIGIN = 0x08000000,	LENGTH = 64K
 	SRAM(rwx):	ORIGIN = 0x20000000,	LENGTH = 20K
 }
 
