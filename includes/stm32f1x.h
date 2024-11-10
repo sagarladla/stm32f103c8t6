@@ -1,7 +1,7 @@
 #pragma once
 
 #define RCC_BASE_ADDR		0x40021000
-#define RCC_RC			(*(volatile unsigned int *)(RCC_BASE_ADDR + 0x00))
+#define RCC_CR			(*(volatile unsigned int *)(RCC_BASE_ADDR + 0x00))
 #define RCC_CFGR		(*(volatile unsigned int *)(RCC_BASE_ADDR + 0x04))
 #define RCC_CIR			(*(volatile unsigned int *)(RCC_BASE_ADDR + 0x08))
 #define RCC_APB2RSTR		(*(volatile unsigned int *)(RCC_BASE_ADDR + 0x0c))
