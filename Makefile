@@ -1,18 +1,17 @@
-CC=arm-none-eabi-gcc
-MARCH=cortex-m3
-CFLAGS= -c -mcpu=$(MARCH) -mthumb -std=gnu17 -Wall -O0
-LDFLAGS= -nostdlib -T linker_script.ld -Wl,-Map=final.map
+toolchain	:=arm-none-eabi
+cpu		:=cortex-m3
+std		:=gnu17
+CC		:=$(toolchain)-gcc
+CFLAGS		:=-mcpu=$(cpu) -mthumb -std=$(std) -Wall -Wextra -Werror -g -O0 -fno-common -fno-builtin -Iincludes
+LDFLAGS		:=-mthumb -nostdinc -nolibc -nostartfiles --specs=nosys.specs --specs=nano.specs -T stm32f103.ld -Wl,-Map=main.map,--verbose
 
-all: main.o startup.o final.elf
-
-main.o: main.c
-	$(CC) $(CFLAGS) $^ -o $@
-
-startup.o: startup.c
-	$(CC) $(CFLAGS) $^ -o $@
-
-final.elf: main.o startup.o
+main.elf: main.o startup_stm32f103.o
 	$(CC) $(LDFLAGS) $^ -o $@
 
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+flash:
+	openocd -f openocd.cfg -c "program main.elf verify reset exit"
 clean:
-	rm -rf *.o *.elf *map *.out
+	rm -rf *.o *.elf *.map *.out *.gch

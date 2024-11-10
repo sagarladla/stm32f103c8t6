@@ -1,0 +1,29 @@
+{
+        "version": "0.2.0",
+        "configurations": [
+                {
+                        "name": "Cortex Debug",
+                        "cwd": "${workspaceFolder}",
+                        "executable": "${workspaceFolder}/main.elf",
+                        "request": "launch",
+                        "type": "cortex-debug",
+                        "runToEntryPoint": "main",
+                        "device": "stm32f1",
+                        "servertype": "openocd",
+                        "gdbPath": "gdb-multiarch",
+                        "configFiles": [
+                                "interface/stlink.cfg",
+                                "target/stm32f1x.cfg"
+                        ],
+                        "preLaunchCommands": [
+                                "monitor program ${workspaceFolder}/main.elf verify reset"
+                        ],
+                        "internalConsoleOptions": "neverOpen",
+                        "showDevDebugOutput": "raw",
+                        "liveWatch": {
+                                "enabled": true,
+                                "samplesPerSecond": 4
+                        }
+                }
+        ]
+}

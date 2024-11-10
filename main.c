@@ -4,13 +4,24 @@
  * @brief:	main entry file after bootloader startup or system reset.
 */
 
-#include <stdint.h>
+#include <stm32f1x.h>
 
-uint32_t a = 0x08888;
-const uint32_t const_v_1 = 10000;
-
-int main()
+__attribute__((constructor)) void before_main(void)
 {
+	while (1);
+}
 
-	return a + const_v_1;
+int main(void)
+{
+	GPIOC_ODR |= (1 << 13);
+	__asm__("mov r8, #0x01");
+	while (1)
+	{
+		/*
+		GPIOC_BSRR |= (1 << 13);
+		for (volatile uint32_t i = 0; i < 25000; i++);
+		GPIOC_BSRR &= ~(1 << 13);
+		for (volatile uint32_t i = 0; i < 25000; i++);*/
+	}
+	return 0;
 }
