@@ -2,7 +2,7 @@ toolchain	:=arm-none-eabi
 cpu		:=cortex-m3
 std		:=gnu17
 CC		:=$(toolchain)-gcc
-CFLAGS		:=-mcpu=$(cpu) -mthumb -std=$(std) -Wall -Wextra -Werror -g -O0 -fno-common -fno-builtin -Iincludes
+CFLAGS		:=-mcpu=$(cpu) -mthumb -std=$(std) -Wall -Wextra -Werror -g -O3 -fno-common -fno-builtin -Iincludes
 LDFLAGS		:=-mthumb -nostdinc -nolibc -nostartfiles --specs=nosys.specs --specs=nano.specs -T stm32f103.ld -Wl,-Map=main.map,--verbose
 
 main.elf: main.o startup_stm32f103.o

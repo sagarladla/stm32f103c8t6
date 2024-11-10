@@ -28,10 +28,12 @@ void set_led_gpio(void)
 
 void delay()
 {
-	int i = 30000;
-	int j = 30000;
-	while (i--);
-	while (j--);
+	int i = 100000;
+	int j = 100000;
+	while (i--)
+		__asm__("nop");
+	while (j--)
+		__asm__("nop");
 	return;
 }
 
