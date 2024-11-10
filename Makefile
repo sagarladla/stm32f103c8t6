@@ -13,5 +13,6 @@ main.elf: main.o startup_stm32f103.o
 
 flash:
 	openocd -f openocd.cfg -c "program main.elf verify reset exit"
+
 clean:
 	rm -rf *.o *.elf *.map *.out *.gch
