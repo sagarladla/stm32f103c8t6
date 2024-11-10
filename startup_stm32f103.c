@@ -4,10 +4,11 @@
  * @file:	startup_stm32f103.c
  * @brief:	STM32F103C8T6 microcontroller startup file.
  * 		This program executes:
- * 			- set the initial SP
- * 			- set initial PC == Reset_Handler
  * 			- set the vector table entries with ISR address
+ * 			- set the initial MSP
+ * 			- set initial PC == irq_reset
  * 			- configure the system clock, peripherals and memory
+ * 			- configure C runtime
  * 			- branch to main in the C library
  * 		After RESET, the Cortex-M3 microcontroller is in Thread mode,
  * 		priority is privileged, and the STACK is set to main()
@@ -49,7 +50,18 @@ void bss_section(void)
  * @brief configure system clock, set up peripherals, memory,  */ 
 void sys_init(void)
 {
-	RCC_CFGR |= (1 << 25);
+	// check if high speed internal clock is ready
+	if ((RCC_CR >> 1) == 1)
+	{
+		// HSI clock enable
+		RCC_CR |= 0x01;
+	}
+	// check if high speed external clock is ready
+	else if ((RCC_CR >> 17) == 1)
+	{
+		// HSE clock enable
+		RCC_CR |= (1 << 16);
+	}
 	return;
 }
 
