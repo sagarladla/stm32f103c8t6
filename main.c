@@ -1,5 +1,5 @@
 /**
- * @author:	Sagar Ladla [sagarladla@gmail.com]
+ * @author:	Sagarvarman Ladla [sagarladla@gmail.com]
  * @file:	main.c
  * @brief:	main entry file after bootloader startup or system reset.
 */
