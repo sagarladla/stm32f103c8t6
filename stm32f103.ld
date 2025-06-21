@@ -1,6 +1,6 @@
 /**
  * @target:	armv7-m3
- * @author:	Sagar Ladla [sagarladla@gmail.com]
+ * @author:	Sagarvarman Ladla [sagarladla@gmail.com]
  * @file:	stm32f103.ld
  * @brief:	STM32F103C8T6 microcontroller linker script file.
  * 		This program handles:
