@@ -1,17 +1,4 @@
 /**
- * @target:	armv7-m3
- * @author:	Sagarvarman Ladla [sagarladla@gmail.com]
- * @file:	startup_stm32f103.c
- * @brief:	STM32F103C8T6 microcontroller startup file.
- * 		This program executes:
- * 			- set the vector table entries with ISR address
- * 			- set the initial MSP
- * 			- set initial PC == irq_reset
- * 			- configure the system clock, peripherals and memory
- * 			- configure C runtime
- * 			- branch to main in the C library
- * 		After RESET, the Cortex-M3 microcontroller is in Thread mode,
- * 		priority is privileged, and the STACK is set to main()
  * @target:     armv7-m3
  * @author:     Sagar Ladla [sagarladla@gmail.com]
  * @file:       startup_stm32f103.c

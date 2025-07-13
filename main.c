@@ -2,7 +2,7 @@
  * @author:	Sagarvarman Ladla [sagarladla@gmail.com]
  * @file:	main.c
  * @brief:	main entry file after bootloader startup or system reset.
-*/
+ */
 
 #include <os.h>
 #include <stm32f1x.h>
