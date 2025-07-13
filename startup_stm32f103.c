@@ -1,6 +1,6 @@
 /**
  * @target:     armv7-m3
- * @author:     Sagar Ladla [sagarladla@gmail.com]
+ * @author:     Sagarvarman Ladla [sagarladla@gmail.com]
  * @file:       startup_stm32f103.c
  * @brief:      STM32F103C8T6 microcontroller startup file.
  *              This program executes:
@@ -123,6 +123,6 @@ void create_thread(funcptr task)
 {
         intr_di();
         unsigned int *sp;
-        tcb_t *tasks = &thread_pool
+        tcb_t *tasks = &thread_pool;
         return;
 }

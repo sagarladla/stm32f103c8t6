@@ -1,14 +1,6 @@
 /**
- * @target:	armv7-m3
- * @author:	Sagarvarman Ladla [sagarladla@gmail.com]
- * @file:	stm32f103.ld
- * @brief:	STM32F103C8T6 microcontroller linker script file.
- * 		This program handles:
- * 			- set FLASH memory from 0x08000000 address with 64KB space
- * 			- set SRAM  memory from 0x20000000 address with 20KB space
- * 			- define sections of memory
  * @target:     armv7-m3
- * @author:     Sagar Ladla [sagarladla@gmail.com]
+ * @author:     Sagarvarman Ladla [sagarladla@gmail.com]
  * @file:       stm32f103.ld
  * @brief:      STM32F103C8T6 microcontroller linker script file.
  *              This program handles:

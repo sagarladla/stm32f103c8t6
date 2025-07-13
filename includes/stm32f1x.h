@@ -6,7 +6,7 @@
 #define RCC_CIR                 (*(volatile unsigned int *)(RCC_BASE_ADDR + 0x08))
 #define RCC_APB2RSTR            (*(volatile unsigned int *)(RCC_BASE_ADDR + 0x0c))
 #define RCC_APB1RSTR            (*(volatile unsigned int *)(RCC_BASE_ADDR + 0x10))
-#define RCC_AHBENR		(*(volatile unsigned int *)(RCC_BASE_ADDR + 0x14))
+#define RCC_AHBENR              (*(volatile unsigned int *)(RCC_BASE_ADDR + 0x14))
 #define RCC_APB2ENR             (*(volatile unsigned int *)(RCC_BASE_ADDR + 0x18))
 #define RCC_APB1ENR             (*(volatile unsigned int *)(RCC_BASE_ADDR + 0x1c))
 #define RCC_BDCR                (*(volatile unsigned int *)(RCC_BASE_ADDR + 0x20))
