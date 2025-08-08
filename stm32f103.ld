@@ -35,9 +35,9 @@ SECTIONS
                 PROVIDE(_etext = .);
         } > flash
 
-        .rodata :       ALIGN(0x4)
+        .const :       ALIGN(0x4)
         {
-                *(.rodata*)
+                *(.const*)
                 . = ALIGN(0x4);
         } > flash
 
@@ -65,6 +65,20 @@ SECTIONS
                 . = ALIGN(4);
                 PROVIDE(_ebss = .);
         } > sram
+
+	.heap   :       ALIGN(0x4)
+	{
+		PROVIDE(_heap_start = .);
+		. = . + 0x1000; // 4KB heap size
+		PROVIDE(_heap_end = .);
+	} > sram
+
+	.stack :       ALIGN(0x4)
+	{
+		PROVIDE(_stack_start = .);
+		. = _stack; // Stack starts at the end of SRAM
+		PROVIDE(_stack_end = .);
+	} > sram (HIGH)
 
         /DISCARD/ :
         {
