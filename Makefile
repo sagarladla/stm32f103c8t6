@@ -30,19 +30,19 @@ TARGET            = $(BUILD_DIR)/$(RELEASE_DIR)/$(PROJECT)
 MCU               = cortex-m3
 
 # Compiler settings
-toolchain	  = arm-none-eabi-
+toolchain         = arm-none-eabi-
 CC                = $(toolchain)gcc
 CSTD              = c2x
 
 CFLAGS            = -mcpu=$(MCU) -mthumb -std=$(CSTD) \
-		    -Wall -Wextra -Werror -g -O3 \
-		    -fno-common -fno-builtin -ffreestanding \
-		    -nostdlib -nostartfiles -Wno-unused-parameter -v ${INCLUDES}
+                    -Wall -Wextra -Werror -g -O3 \
+                    -fno-common -fno-builtin -ffreestanding \
+                    -nostdlib -nostartfiles -Wno-unused-parameter -v ${INCLUDES}
 
-LDSCRIPT	  = $(SCRIPTS)/stm32f103.ld
+LDSCRIPT          = $(SCRIPTS)/stm32f103.ld
 LDFLAGS           = -T$(LDSCRIPT) -mthumb -nostdinc -nolibc \
-		    -nostartfiles --specs=nosys.specs --specs=nano.specs \
-		    -Wl,--gc-sections -Wl,-Map=$(TARGET).map --verbose
+                    -nostartfiles --specs=nosys.specs --specs=nano.specs \
+                    -Wl,--gc-sections -Wl,-Map=$(TARGET).map --verbose
 OBJCOPY           = $(toolchain)objcopy
 
 default: all
@@ -65,7 +65,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 flash:
-        openocd -f $(SCRIPTS)/openocd.cfg -c "program $(TARGET).elf verify reset exit"
+	openocd -f $(SCRIPTS)/openocd.cfg -c "program $(TARGET).elf verify reset exit"
 
 # Clean up build artifacts
 clean:
