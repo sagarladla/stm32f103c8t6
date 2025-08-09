@@ -48,5 +48,5 @@ void clock_init(void)
 
 
         // Wait until SYSCLK is ready
-        while ((RCC_CFGR & (0b10 << 2u)) != (0b10 << 0u)); // check SWS bits not equal to 10 [PLL Source]
+        while ((RCC_CFGR & (0b10 << 2u)) != (0b10 << 2u)); // check SWS bits not equal to 10 [PLL Source]
 }
