@@ -82,6 +82,7 @@
 #define STK_CALIB               (*(volatile unsigned int *)(SYSTICK_BASE_ADDR + 0x0c))
 
 #define SCB_BASE_ADDR           0xe000ed00
+#define SCB_ACTLR               (*(volatile unsigned int *)(0xe000e008))
 #define SCB_CPUID               (*(volatile unsigned int *)(SCB_BASE_ADDR + 0x00))
 #define SCB_ICSR                (*(volatile unsigned int *)(SCB_BASE_ADDR + 0x04))
 #define SCB_VTOR                (*(volatile unsigned int *)(SCB_BASE_ADDR + 0x08))
@@ -96,3 +97,14 @@
 #define SCB_HFSR                (*(volatile unsigned int *)(SCB_BASE_ADDR + 0x2c))
 #define SCB_MMAR                (*(volatile unsigned int *)(SCB_BASE_ADDR + 0x34))
 #define SCB_BFAR                (*(volatile unsigned int *)(SCB_BASE_ADDR + 0x38))
+#define SCB_AFSR                (*(volatile unsigned int *)(SCB_BASE_ADDR + 0x3c))
+
+#define FLASH_BASE_ADDR         0x40022000
+#define FLASH_ACR               (*(volatile unsigned int *)(FLASH_BASE_ADDR + 0x00))
+#define FLASH_KEYR              (*(volatile unsigned int *)(FLASH_BASE_ADDR + 0x04))
+#define FLASH_OPTKEYR           (*(volatile unsigned int *)(FLASH_BASE_ADDR + 0x08))
+#define FLASH_SR                (*(volatile unsigned int *)(FLASH_BASE_ADDR + 0x0c))
+#define FLASH_CR                (*(volatile unsigned int *)(FLASH_BASE_ADDR + 0x10))
+#define FLASH_AR                (*(volatile unsigned int *)(FLASH_BASE_ADDR + 0x14))
+#define FLASH_OBR               (*(volatile unsigned int *)(FLASH_BASE_ADDR + 0x1c))
+#define FLASH_WRPR              (*(volatile unsigned int *)(FLASH_BASE_ADDR + 0x20))

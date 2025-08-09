@@ -9,3 +9,9 @@ typedef unsigned char           uint8_t;
 typedef unsigned short          uint16_t;
 typedef unsigned int            uint32_t;
 typedef unsigned long           uint64_t;
+
+typedef unsigned int            size_t;
+typedef size_t                  uintptr_t;
+
+typedef signed int              ssize_t;
+typedef ssize_t                 intptr_t;

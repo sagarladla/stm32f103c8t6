@@ -16,16 +16,12 @@
 
 #include <os.h>
 #include <isr.h>
+#include <stdint.h>
+#include <string.h>
 #include <stm32f1x.h>
 
 extern int main(void);
-extern void __libc_init_array(void);
-extern unsigned int _stack;
-extern unsigned int _idata;
-extern unsigned int _data;
-extern unsigned int _edata;
-extern unsigned int _bss;
-extern unsigned int _ebss;
+extern uint32_t _stack;
 
 
 tcb_t thread_pool;
@@ -36,22 +32,31 @@ tcb_t *next_thread;
 // copy data section
 void data_section(void)
 {
-        unsigned int *src_data = &_idata;
-        unsigned int *dst_data = &_data;
-        while (dst_data < &_edata)
-                *dst_data++ = *src_data++;
+        extern uint32_t _data;
+        extern uint32_t _idata;
+        extern uint32_t _edata;
+        memcpy(&_data, &_idata, (size_t)(&_edata - &_data));
         return;
 }
 
 // clear bss section
 void bss_section(void)
 {
-        unsigned int *bss = &_bss;
-        while (bss < &_ebss)
-                *bss++ = 0x00;
+        extern uint32_t _bss;
+        extern uint32_t _ebss;
+        memset(&_bss, 0x00, (size_t)(&_ebss - &_bss));
         return;
 }
 
+__attribute__((naked, noreturn)) void isr_reset(void)
+{
+        data_section();
+        bss_section();
+        sys_init();
+
+        main();
+        while (1);
+}
 /**
  * System Hardware Initialization
  * @brief configure system clock, set up peripherals, memory,  */ 
@@ -72,56 +77,52 @@ void sys_init(void)
         return;
 }
 
-
-void _init(void) {}
-
-__attribute__((naked, noreturn)) void isr_reset(void)
+void set_pendsv_low_priority(void)
 {
-        data_section();
-        bss_section();
-        // __libc_init_array();
-        main();
-
-        while (1);
+        SCB_SHPR3 |= (0xf0u << 16u);    // set PendSV low priority
 }
 
-typedef void (*isr_t)(void);
-static const isr_t __ivt[]	__attribute__((used, section(".ivt"))) =
+void set_pendsv_pending(void)
 {
-        (isr_t)&_stack,
-        isr_reset,
-        isr_nmi,
-        isr_hardfault,
-        isr_memmanage,
-        isr_busfault,
-        isr_usagefault,
-        0,0,0,0,
-        isr_svcall,
-        isr_debugmonitor,
-        0,
-        isr_pendsv,
-        isr_systick
-};
-
-void isr_default(void)
-{
-        asm ("mov r8, #0x01");
-        while (1);
+        SCB_ICSR |= (0x01u << 28u);     // set pendsvset bit
 }
 
-void intr_en(void)
+void unset_pendsv_pending(void)
 {
-        asm ("CPSIE I");
+        SCB_ICSR |= (0x01u << 27u);     // set pendsvclr bit
 }
 
-void intr_di(void)
+void set_usage_bus_mm_fault_high_priority(void)
 {
-        asm ("CPSID I");
+        SCB_SHPR1 |= (0x00u << 4u);     // set MemoryManagementFault high priority
+        SCB_SHPR1 |= (0x00u << 12u);    // set BusFault high priority
+        SCB_SHPR1 |= (0x00u << 20u);    // set UsageFault high priority
+}
+
+void config_irq(void)
+{
+        SCB_CCR |= (0x01u << 0u);       // set NONBASETHRDENA bit
+        SCB_CCR |= (0x01u << 1u);       // set USERSETMPEND bit
+        SCB_CCR &= ~(0x01u << 2u);      // unset RESERVED bit
+        SCB_CCR |= (0x01u << 3u);       // set UNALIGN_TRP bit
+        SCB_CCR |= (0x01u << 4u);       // set DIV_0_TRP bit
+        SCB_CCR &= ~(0b111u << 5u);     // unset RESERVED bits
+        SCB_CCR &= ~(0x01u << 8u);      // unset BFHFNMIGN bit
+        SCB_CCR &= ~(0x01u << 9u);      // unset STKALIGN bit
+        SCB_CCR &= (0x00000fffu);       // unset reserved bit
+}
+
+void setup_stk_tim(void)
+{
+        // Configure SysTick timer
+        STK_LOAD = (SystemCoreClock / 1000) - 1; // 1ms tick
+        STK_VAL = 0;
+        STK_CTRL |= (1 << 0) | (1 << 1) | (1 << 2); // Enable SysTick
 }
 
 void create_thread(funcptr task)
 {
-        intr_di();
+        __disable_irq();
         unsigned int *sp;
         tcb_t *tasks = &thread_pool;
         return;
