@@ -35,18 +35,10 @@ SECTIONS
                 PROVIDE(_etext = .);
         } > flash
 
-        .const :       ALIGN(0x4)
+        .rodata :       ALIGN(0x4)
         {
-                *(.const*)
+                *(.rodata*)
                 . = ALIGN(0x4);
-        } > flash
-
-        .init_array     :       ALIGN(0x4)
-        {
-                PROVIDE_HIDDEN (__init_array_start = .);
-                KEEP (*(.init_array*))
-                PROVIDE_HIDDEN (__init_array_end = .);
-                . = ALIGN(0x04);
         } > flash
 
         _idata = LOADADDR(.data);
@@ -65,20 +57,6 @@ SECTIONS
                 . = ALIGN(4);
                 PROVIDE(_ebss = .);
         } > sram
-
-	.heap   :       ALIGN(0x4)
-	{
-		PROVIDE(_heap_start = .);
-		. = . + 0x1000; // 4KB heap size
-		PROVIDE(_heap_end = .);
-	} > sram
-
-	.stack :       ALIGN(0x4)
-	{
-		PROVIDE(_stack_start = .);
-		. = _stack; // Stack starts at the end of SRAM
-		PROVIDE(_stack_end = .);
-	} > sram
 
         /DISCARD/ :
         {

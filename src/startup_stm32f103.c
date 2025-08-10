@@ -14,7 +14,6 @@
  *              priority is privileged, and the STACK is set to main()
  */
 
-#include <os.h>
 #include <isr.h>
 #include <clock.h>
 #include <stdint.h>
@@ -45,7 +44,7 @@ void bss_section(void)
 
 __attribute__((naked, noreturn)) void isr_reset(void)
 {
-        __disable_irq();
+        // __disable_irq();
 
         data_section();
         bss_section();
@@ -53,10 +52,15 @@ __attribute__((naked, noreturn)) void isr_reset(void)
         sys_clock_init();
         periph_clock_init();
 
-        __enable_irq();
+        // __enable_irq();
         
         main();
         
+        while (1);
+}
+
+void isr_default(void)
+{
         while (1);
 }
 

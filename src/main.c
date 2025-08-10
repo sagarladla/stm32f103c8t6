@@ -4,7 +4,6 @@
  * @brief:	main entry file after bootloader startup or system reset.
  */
 
-#include <os.h>
 #include <stm32f1x.h>
 
 __attribute__((constructor)) void before_main(void)
@@ -40,7 +39,6 @@ void delay()
 
 int main(void)
 {
-        sys_init();
         set_led_gpio();
         __asm__("mov r8, #0x01");
         while (1)
