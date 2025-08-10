@@ -4,7 +4,7 @@
                 {
                         "name": "Cortex Debug",
                         "cwd": "${workspaceFolder}",
-                        "executable": "${workspaceFolder}/main.elf",
+                        "executable": "${workspaceFolder}/build/release/main.elf",
                         "request": "launch",
                         "type": "cortex-debug",
                         "runToEntryPoint": "main",
@@ -16,7 +16,7 @@
                                 "target/stm32f1x.cfg"
                         ],
                         "preLaunchCommands": [
-                                "monitor program ${workspaceFolder}/main.elf verify reset"
+                                "monitor program ${workspaceFolder}/build/release/main.elf verify reset"
                         ],
                         "internalConsoleOptions": "neverOpen",
                         "showDevDebugOutput": "raw",
