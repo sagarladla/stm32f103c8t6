@@ -78,7 +78,7 @@ SECTIONS
 		PROVIDE(_stack_start = .);
 		. = _stack; // Stack starts at the end of SRAM
 		PROVIDE(_stack_end = .);
-	} > sram (HIGH)
+	} > sram
 
         /DISCARD/ :
         {

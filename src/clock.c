@@ -8,6 +8,7 @@
  */
 
 #include <clock.h>
+#include <stm32f1x.h>
 
 // Default HSE/HSI clock frequency
 static unsigned int SYSTEM_CLOCK = 8000000;

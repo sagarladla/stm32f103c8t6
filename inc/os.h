@@ -13,9 +13,5 @@ typedef struct tcb
         struct tcb *next;
 } tcb_t;
 
-void __enable_irq(void);
-void __disable_irq(void);
 void create_thread(funcptr task);
-
 void sys_init(void);
-
