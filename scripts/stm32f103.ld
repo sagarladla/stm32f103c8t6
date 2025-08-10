@@ -9,8 +9,6 @@
  *                      - define sections of memory
  */
 
-ENTRY(isr_reset)
-
 MEMORY
 {
         flash(rx)       :       ORIGIN = 0x08000000, LENGTH = 64K,
