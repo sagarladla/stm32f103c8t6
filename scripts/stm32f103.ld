@@ -14,7 +14,7 @@ ENTRY(isr_reset)
 MEMORY
 {
         flash(rx)       :       ORIGIN = 0x08000000, LENGTH = 64K,
-        sram(rwx)       :       ORIGIN = 0x20000000, LENGTH = 20K
+        sram (rwx)      :       ORIGIN = 0x20000000, LENGTH = 20K
 }
 
 _eram	= ORIGIN(sram) + LENGTH(sram);

@@ -3,6 +3,7 @@
 void isr_default (void);
 
 // system irq
+void isr_reset (void)                  __attribute__((naked, noreturn));
 void isr_nmi (void)                    __attribute__((weak, alias ("isr_default")));
 void isr_hardfault (void)              __attribute__((weak, alias ("isr_default")));
 void isr_memmanage (void)              __attribute__((weak, alias ("isr_default")));

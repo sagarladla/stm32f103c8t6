@@ -9,10 +9,10 @@
 
 #include <clock.h>
 
-// Default HSE clock frequency
-static unsigned int SYSTEM_CLOCK = 72000000; //8000000;
+// Default HSE/HSI clock frequency
+static unsigned int SYSTEM_CLOCK = 8000000;
 
-void clock_init(void)
+void sys_clock_init(void)
 {
         // Enable HSE (High-Speed External) clock
         RCC_CR |= (0x01u << 16u); // set HSEON bit
@@ -25,6 +25,7 @@ void clock_init(void)
         FLASH_ACR |= (0x01u << 4u); // set PRFTBE bit
 
         // Configure PLL
+        RCC_CFGR &= ~(0x01u << 17u); // set PLLXTPRE bit to 0 [HSE clock not divided]
         RCC_CFGR |= (0x01u << 16u); // set PLLSRC to HSE
         RCC_CFGR |= (0b0111u << 18u); // set PLLMUL to 9
 
@@ -46,7 +47,25 @@ void clock_init(void)
         // Set the system clock source (SYSCLK) to PLL
         RCC_CFGR |= (0b10 << 0u); // set SW bits to 10 [select PLL as SYSCLK source]
 
-
         // Wait until SYSCLK is ready
         while ((RCC_CFGR & (0b10 << 2u)) != (0b10 << 2u)); // check SWS bits not equal to 10 [PLL Source]
+}
+
+void periph_clock_init(void)
+{
+        // Enable peripheral clocks
+        RCC_APB2ENR |= (0x01u << 4u); // Enable GPIOC clock
+        RCC_APB1ENR |= (0x01u << 0u); // Enable TIM2 clock
+}
+
+void sys_clock_update(void)
+{
+        // Update the system clock frequency
+
+        // TODO: modify later to read system clock from system itself,
+        SYSTEM_CLOCK = 72000000; // Update with the current system clock frequency
+}
+unsigned int get_system_clock(void)
+{
+        return SYSTEM_CLOCK; // Return the current system clock frequency
 }

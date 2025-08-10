@@ -1,30 +1,20 @@
-#include "os.h"
+#include <os.h>
 
-static tcb_t *current_tcb = NULL;
+tcb_t thread_pool[THREAD_POOL_SIZE];
+tcb_t *exec_queue;
+tcb_t *curr_thread;
+tcb_t *next_thread;
 
-void __enable_irq(void)
-{
-        __asm volatile ("cpsie i");
-}
 
-void __disable_irq(void)
-{
-        __asm volatile ("cpsid i");
-}
-
-void sys_init(void)
-{
-        // Disable interrupts
-        __disable_irq();
-
-        // Configure the system clock
-        clock_init();
-
-        // Enable interrupts
-        __enable_irq();
-}
-
-void create_thread(funcptr task)
-{
-        // Create a new thread
-}
+// void create_thread(funcptr task)
+// {
+//         __disable_irq();
+//         unsigned int *sp;
+//         tcb_t *tasks = &thread_pool;
+//         return;
+// }
+// void sys_clock_init(void)
+// {
+//         // Initialize the system clock
+//         sys_clock_update();
+// }

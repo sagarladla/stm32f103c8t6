@@ -9,5 +9,7 @@
  * 
  */
 
-void clock_init(void);
+void sys_clock_init(void);
+void periph_clock_init(void);
 void sys_clock_update(void);
+unsigned int get_system_clock(void);
