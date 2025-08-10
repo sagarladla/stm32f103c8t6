@@ -15,8 +15,7 @@ MEMORY
         sram (rwx)      :       ORIGIN = 0x20000000, LENGTH = 20K
 }
 
-_eram	= ORIGIN(sram) + LENGTH(sram);
-_stack	= _eram;
+_stack	= ORIGIN(sram) + LENGTH(sram);
 
 SECTIONS
 {
