@@ -34,13 +34,17 @@ toolchain         = arm-none-eabi-
 CC                = $(toolchain)gcc
 CSTD              = c2x
 
+HEAP_SIZE         = 0x1000
+STACK_SIZE        = 0x1000
 CFLAGS            = -mcpu=$(MCU) -mthumb -std=$(CSTD) \
                     -Wall -Wextra -Werror -g -O3 \
                     -fno-common -fno-builtin -ffreestanding \
+		    -DHEAP_SIZE=$(HEAP_SIZE) -DSTACK_SIZE=$(STACK_SIZE) \
                     -nostdlib -nostartfiles -Wno-unused-parameter -v ${INCLUDES}
 
 LDSCRIPT          = $(SCRIPTS)/stm32f103.ld
 LDFLAGS           = -T$(LDSCRIPT) -mthumb -nostdinc -nolibc \
+                    -DHEAP_SIZE=$(HEAP_SIZE) -DSTACK_SIZE=$(STACK_SIZE) \
                     -nostartfiles --specs=nosys.specs --specs=nano.specs \
                     -Wl,--gc-sections -Wl,-Map=$(TARGET).map --verbose
 OBJCOPY           = $(toolchain)objcopy
@@ -65,7 +69,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 flash:
-	openocd -f $(SCRIPTS)/openocd.cfg -c "program $(TARGET).elf verify reset exit"
+	openocd -f $(SCRIPTS)/openocd.cfg -c "program $(TARGET).elf verify reset; exit; shutdown"
 
 # Clean up build artifacts
 clean:

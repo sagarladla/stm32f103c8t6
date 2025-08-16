@@ -11,48 +11,93 @@
 
 MEMORY
 {
-        flash(rx)       :       ORIGIN = 0x08000000, LENGTH = 64K,
-        sram (rwx)      :       ORIGIN = 0x20000000, LENGTH = 20K
+        flash(rx)  : ORIGIN = 0x08000000, LENGTH = 64K,
+        sram (rwx) : ORIGIN = 0x20000000, LENGTH = 20K
 }
 
-_stack	= ORIGIN(sram) + LENGTH(sram);
+_estack	= ORIGIN(sram) + LENGTH(sram);
+STACK_SIZE = 0x1; /* 4KB stack size */
+HEAP_SIZE  = 0x1; /* 4KB heap size */
 
 SECTIONS
 {
-        .ivt    :       ALIGN(0x4)
+        .ivt     :
         {
                 KEEP(*(.ivt))
-                . = ALIGN(0x4);
         } > flash
 
-        .text   :       ALIGN(0x4)
+        .startup :
         {
-                *(.text*)
-                . = ALIGN(4);
+                PROVIDE(_sstartup = .);
+                *(.startup)
+                *(.startup.*)
+                PROVIDE(_estartup = .);
+        } > flash
+
+        .ramkernel :
+        {
+                PROVIDE(_sramkernel = .);
+                *(.ramkernel)
+                *(.ramkernel.*)
+                PROVIDE(_eramkernel = .);
+        } > sram AT > flash
+
+        .text      :
+        {
+                PROVIDE(_stext = .);
+                *(.text)
+                *(.text.*)
                 PROVIDE(_etext = .);
         } > flash
 
-        .rodata :       ALIGN(0x4)
+        .rodata :
         {
+                PROVIDE(_srodata = .);
                 *(.rodata*)
-                . = ALIGN(0x4);
+                *(.rodata.*)
+                PROVIDE(_erodata = .);
         } > flash
 
         _idata = LOADADDR(.data);
-        .data   :       ALIGN(0x4)
+        .data   :
         {
                 PROVIDE(_data = .);
-                *(.data*)
-                . = ALIGN(4);
+                *(.data)
+                *(.data.*)
                 PROVIDE(_edata = .);
         } > sram AT > flash
 
-        .bss    :       ALIGN(0x4)
+        .ramkernel_data :
+        {
+                PROVIDE(_sramkernel_data = .);
+                *(.ramkernel_data)
+                *(.ramkernel_data.*)
+                PROVIDE(_eramkernel_data = .);
+        } > sram AT > flash
+
+        .bss (NOLOAD)   :
         {
                 PROVIDE(_bss = .);
-                *(.bss*)
-                . = ALIGN(4);
+                *(.bss)
+                *(.bss.*)
                 PROVIDE(_ebss = .);
+        } > sram
+
+        .heap (NOLOAD)   :
+        {
+                PROVIDE(_sheap = .);
+                . = . + HEAP_SIZE;
+                PROVIDE(_eheap = .);
+        } > sram
+
+        /**
+         * descending stack section
+         */
+        .stack (NOLOAD)   :
+        {
+                . = (_estack - STACK_SIZE);
+                PROVIDE(_sstack = .);
+                /* estack provided at top */
         } > sram
 
         /DISCARD/ :
@@ -60,5 +105,17 @@ SECTIONS
                 libc.a(*)
                 libm.a(*)
                 libgcc.a(*)
+                *(.note.GNU-stack)
         }
 }
+
+ivt_size = SIZEOF(.ivt);
+startup_size = SIZEOF(.startup);
+ramkernel_size = SIZEOF(.ramkernel);
+text_size = SIZEOF(.text);
+rodata_size = SIZEOF(.rodata);
+data_size = SIZEOF(.data);
+ramkernel_data_size = SIZEOF(.ramkernel_data);
+bss_size = SIZEOF(.bss);
+heap_size = SIZEOF(.heap);
+stack_size = SIZEOF(.stack);

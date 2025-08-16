@@ -21,7 +21,7 @@
 #include <stm32f1x.h>
 
 extern int main(void);
-extern uint32_t _stack;
+extern uint32_t _estack;
 
 // copy data section
 void data_section(void)
@@ -67,7 +67,7 @@ void isr_default(void)
 typedef void (*isr_t)(void);
 static const isr_t __ivt[] __attribute__((used, section(".ivt"))) =
 {
-        (isr_t)&_stack,
+        (isr_t)&_estack,
         isr_reset,
         isr_nmi,
         isr_hardfault,
