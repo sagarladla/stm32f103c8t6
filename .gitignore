@@ -56,3 +56,7 @@ dkms.conf
 
 # dot files
 .DS_Store
+
+# build directories
+build/
+dist/
